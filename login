@@ -89,3 +89,78 @@
   </script>
 </body>
 </html>
+
+<script>
+    function attemptLogin() {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      // Check if credentials match
+      if (username === "JFS304571" && password === "Node3pS7yZq19nT8m") {
+        // Redirect to the next page
+        window.location.href = "studentinbox.html"; // Replace with the actual page you want to redirect to
+      } else {
+        alert("Invalid credentials.");
+      }
+    }
+</script>
+
+<script>
+    function attemptLogin() {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      // Check if credentials match
+      if (username === "IMT682039" && password === "NeuralXcel#4U") {
+        // Redirect to the next page
+        window.location.href = "teacherinbox.html"; // Replace with the actual page you want to redirect to
+      } else {
+        alert("Invalid credentials.");
+      }
+    }
+</script>
+
+<script>
+    function attemptLogin() {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      // Check if credentials match
+      if (username === "ABPG004558" && password === "Node8lK9sC4t1X-A") {
+        // Redirect to the next page
+        window.location.href = "activeinbox.html"; // Replace with the actual page you want to redirect to
+      } else {
+        alert("Invalid credentials.");
+      }
+    }
+</script>
+
+<script>
+    function attemptLogin() {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      // Check if credentials match
+      if (username === "ACA100874" && password === "password") {
+        // Redirect to the next page
+        window.location.href = "admininbox.html"; // Replace with the actual page you want to redirect to
+      } else {
+        alert("Invalid credentials.");
+      }
+    }
+</script>
+
+<script>
+    function attemptLogin() {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      // Check if credentials match
+      if (username === "KaelenV" && password === "C0nsortium!92") {
+        // Redirect to the next page
+        window.location.href = "arcinbox.html"; // Replace with the actual page you want to redirect to
+      } else {
+        alert("Invalid credentials.");
+      }
+    }
+</script>
