@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crownspire Intranet - Inbox</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="header-logo">🏛️ Crownspire Institute</div>
+        <div class="header-motto">“Ascend. Adapt. Achieve.”</div>
+    </header>
+
+    <main>
+        <div class="inbox">
+            <div class="inbox-header">
+                <h2>Inbox</h2>
+                <button class="compose-btn" onclick="openCompose()">Compose New Email</button>
+            </div>
+
+            <!-- Email list -->
+            <div class="email-list">
+                <div class="email-item unread" id="email1">
+                    <div class="email-star" onclick="toggleStar('email1')">★</div>
+                    <div class="email-subject" onclick="openEmail('email1')">Student Orientation Packet</div>
+                    <div class="email-time">Just Now</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Email Content -->
+        <div class="email-content" id="emailContent" style="display:none;">
+            <div class="email-header">
+                <button onclick="goBack()">Back to Inbox</button>
+                <button onclick="starEmail()">Star</button>
+            </div>
+            <div class="email-body">
+                <h3>🏛️ Crownspire Institute</h3>
+                <p><strong>“Ascend. Adapt. Achieve.”</strong></p>
+                <h4>Student Orientation Packet</h4>
+                <p>🕰️ Welcome to Your Future</p>
+                <p>Dear Student,</p>
+                <p>Congratulations. You have been selected to join the next cohort of scholars at Crownspire Institute...</p>
+                <p><strong>📜 Our Mission</strong></p>
+                <p>At Crownspire, we are committed to...</p>
+                <p>📈 Performance Tracking</p>
+                <p>Your academic progress and behavioral data...</p>
+                <p><strong>🧠 Testing Requirements</strong></p>
+                <p>As part of your onboarding...</p>
+                <p>🛡️ Loyalty, Logic, Legacy. You were chosen for a reason...</p>
+            </div>
+        </div>
+
+        <!-- Compose New Email Modal -->
+        <div class="compose-modal" id="composeModal" style="display:none;">
+            <div class="modal-content">
+                <span class="close" onclick="closeCompose()">&times;</span>
+                <h3>Compose New Email</h3>
+                <textarea id="emailBody" placeholder="Enter your message here..."></textarea>
+                <br>
+                <button onclick="sendEmail()">Send</button>
+                <p id="complianceError" style="color: red;"></p>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+header {
+    background-color: #1a1a1a;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.header-logo {
+    font-size: 32px;
+}
+
+.header-motto {
+    font-style: italic;
+}
+
+.main {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.inbox {
+    width: 60%;
+    background-color: white;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.inbox-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.compose-btn {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.compose-btn:hover {
+    background-color: #0056b3;
+}
+
+.email-list {
+    margin-top: 20px;
+}
+
+.email-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.email-item.unread {
+    background-color: #f0f0f0;
+}
+
+.email-item:hover {
+    background-color: #e0e0e0;
+}
+
+.email-star {
+    cursor: pointer;
+}
+
+.email-subject {
+    flex: 1;
+}
+
+.email-time {
+    color: #888;
+}
+
+.email-content {
+    display: none;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 60%;
+    margin: 20px auto;
+}
+
+.compose-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    width: 400px;
+    position: relative;
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+let emailRead = false;
+
+function openEmail(emailId) {
+    document.getElementById(emailId).classList.remove('unread');
+    document.getElementById('emailContent').style.display = 'block';
+}
+
+function goBack() {
+    document.getElementById('emailContent').style.display = 'none';
+    emailRead = true;
+}
+
+function toggleStar(emailId) {
+    const starElement = document.getElementById(emailId).querySelector('.email-star');
+    starElement.textContent = starElement.textContent === '★' ? '☆' : '★';
+}
+
+function openCompose() {
+    document.getElementById('composeModal').style.display = 'flex';
+}
+
+function closeCompose() {
+    document.getElementById('composeModal').style.display = 'none';
+}
+
+function sendEmail() {
+    const password = prompt('Enter your password for compliance verification:');
+    if (password === "Node3pS7yZq19nT8m") {
+        alert('Email sent! (in progress)');
+        closeCompose();
+    } else {
+        document.getElementById('complianceError').innerText = 'Error: Compliance verification failed.';
+    }
+}
+
+let emailRead = false;
+
+function openEmail(emailId) {
+    document.getElementById(emailId).classList.remove('unread');
+    document.getElementById('emailContent').style.display = 'block';
+}
+
+function goBack() {
+    document.getElementById('emailContent').style.display = 'none';
+    emailRead = true;
+}
+
+function toggleStar(emailId) {
+    const starElement = document.getElementById(emailId).querySelector('.email-star');
+    starElement.textContent = starElement.textContent === '★' ? '☆' : '★';
+}
+
+function openCompose() {
+    document.getElementById('composeModal').style.display = 'flex';
+}
+
+function closeCompose() {
+    document.getElementById('composeModal').style.display = 'none';
+}
+
+<div id="composeModal" style="display:none;">
+    <div class="compose-form">
+        <input type="text" id="emailRecipient" placeholder="Recipient" value="status@spire.log">
+        <input type="text" id="emailSubject" placeholder="Subject" value="Compliance Check">
+        <textarea id="emailBody" placeholder="Write your message..."></textarea>
+        <button onclick="sendEmail()">Send</button>
+        <button onclick="closeCompose()">Cancel</button>
+        <p id="complianceError" style="color:red;"></p>
+    </div>
+</div>
+
+.email-item.unread {
+    background-color: white;
+}
+
+.email-item.read {
+    background-color: #f0f0f0;
+}
+
+.email-star {
+    cursor: pointer;
+}
+
+#composeModal {
+    /* Styling for the compose modal */
+}
+
+
+function sendEmail() {
+    const emailBody = document.getElementById('emailBody').value.trim();
+    const emailRecipient = document.getElementById('emailRecipient').value.trim();
+    
+    // Check if the recipient is "status@spire.log" and the body contains the exact "Node3pS7yZq19nT8m"
+    if (emailRecipient === "status@spire.log" && emailBody === "Node3pS7yZq19nT8m") {
+        // Simulate the email being sent and getting a response
+        alert('Email sent successfully! (In Progress)');
+        simulateEmailResponse(emailBody);
+        closeCompose();
+    } else if (emailRecipient === "status@spire.log") {
+        alert('Error: *@&#$%*@#$^*(#^@$*@#^$(*@#^$*@#%$.');
+    } else {
+        alert('Error: @#&^%$(@#*$(@)#$&)@*#.');
+    }
+}
+
+function simulateEmailResponse(sentBody) {
+    // Simulate the response from status@spire.log
+    const responseBody = `${sentBody} - in progress`;
+
+    // Create a new email item for the response email
+    const newEmail = {
+        subject: "Status Update: Compliance Check",
+        sender: "status@spire.log",
+        body: responseBody,
+        time: "Just Now",
+        read: false,
+        starred: false
+    };
+
+    // Create the email element and add it to the inbox
+    const emailList = document.querySelector('.email-list');
+    const emailItem = document.createElement('div');
+    emailItem.classList.add('email-item', 'unread');
+    emailItem.innerHTML = `
+        <div class="email-star" onclick="toggleStar('email${emailList.children.length + 1}')">★</div>
+        <div class="email-subject" onclick="openEmail('email${emailList.children.length + 1}')">${newEmail.subject}</div>
+        <div class="email-time">${newEmail.time}</div>
+    `;
+    
+    emailItem.id = `email${emailList.children.length + 1}`;
+    emailList.appendChild(emailItem);
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crownspire Institute - Student Newsletter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .inbox {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .email-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .email-header span {
+            font-size: 0.9em;
+            color: #999;
+        }
+        .email-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .email-item {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .email-item:hover {
+            background-color: #f1f1f1;
+        }
+        .read-email {
+            color: #999;
+            text-decoration: line-through;
+        }
+        .email-content {
+            padding: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="inbox">
+        <h2>Crownspire Institute - Student Newsletter</h2>
+        <ul class="email-list">
+            <li class="email-item">
+                <span><strong>Unread</strong> - Crownspire Institute - Student Newsletter</span>
+                <span class="email-header">
+                    <span>New</span>
+                </span>
+            </li>
+            <!-- Grayed out, read email that is clickable -->
+            <li class="email-item read-email" onclick="showEmailContent()">
+                <span><strong>Read</strong> - Crownspire Institute - Student Newsletter</span>
+                <span class="email-header">
+                    <span>Edition #36: Ascend. Adapt. Achieve.</span>
+                </span>
+            </li>
+        </ul>
+
+        <div class="email-content" id="emailContent" style="display: none;">
+            <h3>Crownspire Institute - Student Newsletter</h3>
+            <h4>Edition #36: Ascend. Adapt. Achieve.</h4>
+            <p><strong>Welcome to Another Productive Week, Scholars</strong></p>
+            <p>We are excited to welcome you back for another week of exceptional progress at Crownspire Institute. As always, Crownspire remains at the forefront of academic excellence, fostering students who embody order, precision, and relentless ambition. We trust you’ve acclimated to your new schedules and are continuing to exceed expectations.</p>
+
+            <h4>Upcoming Events & Important Notices:</h4>
+            <ul>
+                <li><strong>Performance Metrics Summit (Friday):</strong> All Tier I students are required to attend their weekly review session with their assigned Advisor Units. A detailed analysis of your most recent behavioral and academic performance will be discussed. Please come prepared with any questions regarding your ongoing development.</li>
+                <li><strong>Biometric Calibration & Sync (Thursday):</strong> Students who have not yet completed the Neuro-Resilience Calibration process are required to attend a session in the Biometric Calibration Chamber. Failure to comply may result in scheduling conflicts, delaying your performance analysis.</li>
+                <li><strong>Crownspire Tech Tournament (Next Month):</strong> An announcement for the upcoming Tech Tournament! This year’s tournament promises to be the most competitive yet. Teams will be formed directly by your Advisor Units, who will consider your strengths in Cybernetic Logic and Predictive Behavior for optimal team pairing. Remember, collaboration and cohesion are essential. Only students who align with the institution's values of collective progress will thrive.</li>
+                <li><strong>Student Council Elections (Monday):</strong> It is that time of year again! The election for the next Student Council President is open to all Tier I students who have demonstrated exemplary academic and behavioral conduct. Please remember, voting is a privilege, not a right, and must be conducted in compliance with all regulations.</li>
+                <li><strong>Neuro-Compliance Checkpoint (Tuesday):</strong> A reminder for all students: your neuro-compliance monitoring is a continuous process. Ensure your personal bio-metrics and thought behavior protocols are functioning correctly to maintain optimal levels of performance.</li>
+            </ul>
+
+            <h4>Crownspire Classified Information:</h4>
+            <ul>
+                <li><strong>Tier System Expansion:</strong> As part of Crownspire's commitment to remaining on the cutting edge of adaptive intelligence, we are pleased to announce the expansion of our TIER System. The new TIER IV will be launching next semester, designed for students who have excelled in both academic and behavioral compliance. Those within Tier IV will have access to advanced educational resources, including Quantum-Informed Civics and Behavioral Pattern Recognition—both fields that are directly aligned with our growing need for adaptive, cognitive leaders.</li>
+                <li><strong>“Enhanced Students” Mention:</strong> Recent reports have suggested that the more neuro-resilient students—those who have completed all calibration protocols—are outperforming their peers by significant margins. Their ability to thrive under pressure and quickly adapt to changing environments makes them prime candidates for the upcoming Behavioral Cohesion Project. Students interested in accelerating their academic growth may be selected for enhanced training.</li>
+            </ul>
+
+            <h4>Special Announcements:</h4>
+            <ul>
+                <li><strong>Student Spotlight - Elara Quinn:</strong> Crownspire Institute has always prided itself on producing the finest minds in the world. One such student, Elara Quinn (class of 2024), made waves early on when she graduated several semesters ahead of her peers. At the time, it seemed like an extraordinary achievement, as she quickly ascended to a Post-Graduate Tier. What was once viewed as a remarkable success is now known to have deeper implications. Elara Quinn’s early graduation marked the beginning of her ascent into a role no one could have predicted. After a mysterious disappearance, it was revealed that Elara had become part of the Post-Graduate Cohort working within Crownspire’s highest levels, directly under the Director’s supervision. Her role in shaping the future of the institution is still unknown, but her legacy will undoubtedly influence the generations to come.</li>
+                <li><strong>The Case of Missing Data:</strong> A recent incident involving Data Corruption within Crownspire’s internal systems led to brief disruptions in our performance metrics. While the issue has been resolved, it’s important to remind students that any attempt to bypass or manipulate the Crownspire Metrics Interface (CMI) will not be tolerated. Compliance, after all, is the cornerstone of success here at the Spire.</li>
+            </ul>
+
+            <h4>In Focus: The Crownspire Legacy</h4>
+            <p>Our legacy of academic rigor and unwavering control over student behavior is reflected in our Behavioral Cohesion Program, which ensures every student’s cognitive potential is fully realized. Scholars will notice subtle updates to their study routines this week. Advisors will be providing an enhanced curriculum based on Crownspire Metrics, ensuring that every scholar reaches their peak potential.</p>
+
+            <h4>Crownspire News:</h4>
+            <ul>
+                <li><strong>Internal File Update:</strong> Recent updates to the Crownspire Intranet have provided students with access to additional training modules. Be sure to complete the new Compositional Obedience Studies series before the end of this semester.</li>
+                <li><strong>Surveillance Literacy:</strong> As part of Crownspire’s ongoing commitment to institutional integrity, we will be implementing Surveillance Literacy & Network Compliance training for all students. Remember: even in the most ordinary moments, your actions are being observed. Awareness is key to ensuring that you are always in alignment with Crownspire’s expectations.</li>
+                <li><strong>Unusual Activity in Zone D:</strong> Over the past few weeks, there have been reports of strange behavioral anomalies within Zone D of the campus. In these instances, students may experience temporary disorientation or brief memory lapses. Should you encounter any such issues, please report immediately to your Advisor Unit for an Identity Alignment Protocol.</li>
+            </ul>
+
+            <p><strong>Director’s Final Thoughts:</strong></p>
+            <p>"At Crownspire, you are not a mere student. You are part of something far greater. Every thought, every action, every decision you make contributes to the harmony of the Spire. Stay vigilant. Stay compliant. And most importantly, stay synchronized."</p>
+            <p>— Director Lucien Caine, Founder of the Crownspire Institute</p>
+
+            <p><strong>End of Newsletter</strong></p>
+        </div>
+    </div>
+
+    <script>
+        function showEmailContent() {
+            document.getElementById('emailContent').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
+
